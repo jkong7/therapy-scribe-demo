@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Therapy Scribe Demo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <h1>Therapy Scribe Demo</h1>
+    <p class="tagline">Consent &rarr; transcript &rarr; evidence-linked DAP draft &rarr; clinician review</p>
+  </header>
+
+  <div class="warning" role="note" aria-label="Demo warning">
+    <strong>Fictional data only. Not for clinical use.</strong>
+    This is a prototype. Do not enter real client information. It is not a medical device,
+    not a diagnostic, risk-assessment or emergency tool, and makes no privacy or regulatory
+    compliance claims. Every draft must be reviewed and rewritten by the clinician.
+  </div>
+
+  <main id="main">
+    <!-- 1. Capture -->
+    <section class="card" aria-labelledby="capture-h">
+      <h2 id="capture-h"><span class="step">1</span> Consent &amp; capture</h2>
+
+      <label class="check">
+        <input type="checkbox" id="consent">
+        <span>I confirm everyone in this (fictional / role-play) session agreed to microphone transcription,
+          and only fictional content will be spoken.</span>
+      </label>
+
+      <p class="caveat" id="privacy-caveat">
+        <strong>Privacy caveat:</strong> live transcription uses your browser's built-in speech recognition.
+        Some browsers (e.g. Chrome) send audio to the browser vendor's servers for processing under
+        their own terms. This app keeps no audio and sends nothing anywhere itself, but it cannot
+        control what the browser/provider does. If unsure, paste a transcript instead.
+      </p>
+
+      <fieldset class="speaker" id="speaker-fieldset">
+        <legend>Live lines are labeled as</legend>
+        <label><input type="radio" name="speaker" value="Therapist" checked> Therapist</label>
+        <label><input type="radio" name="speaker" value="Client"> Client</label>
+      </fieldset>
+
+      <div class="row">
+        <button type="button" id="mic-start" class="primary" disabled aria-describedby="mic-status privacy-caveat">Start microphone</button>
+        <button type="button" id="mic-stop" disabled>Stop</button>
+      </div>
+      <p id="mic-status" class="status" role="status" aria-live="polite"></p>
+      <p id="interim" class="interim" aria-live="off"></p>
+    </section>
+
+    <!-- 2. Transcript -->
+    <section class="card" aria-labelledby="transcript-h">
+      <h2 id="transcript-h"><span class="step">2</span> Transcript</h2>
+      <p class="hint">One utterance per line, prefixed <code>Therapist:</code> or <code>Client:</code>. Edit freely.</p>
+      <div class="row">
+        <button type="button" id="load-sample">Load fictional sample session</button>
+      </div>
+      <label for="transcript" class="sr-only">Session transcript</label>
+      <textarea id="transcript" rows="12" spellcheck="true"
+        placeholder="Therapist: How has your week been?&#10;Client: ..."></textarea>
+      <details id="lines-details">
+        <summary>Numbered lines (<span id="line-count">0</span>)</summary>
+        <ol id="lines" class="lines"></ol>
+      </details>
+    </section>
+
+    <!-- 3. Draft -->
+    <section class="card" aria-labelledby="draft-h">
+      <h2 id="draft-h"><span class="step">3</span> DAP draft</h2>
+      <p class="engine-label">
+        <span class="badge">Demo engine</span>
+        Deterministic keyword matching, <strong>no AI</strong>. It only quotes transcript lines with
+        <code>[Ln]</code> references; anything it cannot quote is “Not documented”. It never generates a
+        diagnosis, intervention, treatment recommendation, or a statement that risk is absent.
+      </p>
+      <div class="row">
+        <button type="button" id="generate" class="primary">Generate draft</button>
+      </div>
+      <p id="draft-status" class="status" role="status" aria-live="polite"></p>
+      <ul id="draft-warnings" class="warnings"></ul>
+
+      <div class="dap">
+        <label for="dap-data">Data</label>
+        <textarea id="dap-data" rows="10"></textarea>
+        <label for="dap-assessment">Assessment</label>
+        <textarea id="dap-assessment" rows="8"></textarea>
+        <label for="dap-plan">Plan</label>
+        <textarea id="dap-plan" rows="6"></textarea>
+      </div>
+
+      <h3>Evidence for references in the draft</h3>
+      <p class="hint">Updates as you edit. Select a reference to highlight the transcript line.</p>
+      <ul id="evidence" class="evidence"></ul>
+    </section>
+
+    <!-- 4. Review -->
+    <section class="card" aria-labelledby="review-h">
+      <h2 id="review-h"><span class="step">4</span> Clinician review</h2>
+      <p class="caveat">
+        Review every statement against the transcript. Risk statements are quoted only as spoken;
+        the absence of a quote never means the absence of risk. This tool is not for emergencies —
+        follow your own clinical and emergency procedures.
+      </p>
+      <label class="check">
+        <input type="checkbox" id="reviewed" disabled>
+        <span>I have reviewed and edited this draft and take responsibility for its content.</span>
+      </label>
+      <div class="row">
+        <button type="button" id="copy" class="primary" disabled>Copy reviewed draft</button>
+        <button type="button" id="reset" class="danger">Reset session</button>
+      </div>
+      <p id="review-status" class="status" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    Everything stays in this tab's memory only — no storage, accounts, backend or sharing.
+    Closing or resetting the page discards it.
+  </footer>
+
+  <script src="src/consent.js"></script>
+  <script src="src/drafter.js"></script>
+  <script src="src/sample.js"></script>
+  <script src="src/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "therapy-scribe-demo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Small therapy ambient-scribe prototype. Fictional data only; not for clinical use.",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "test": "node --test tests/*.test.js",
+    "test:e2e": "node e2e/flow.mjs"
+  },
+  "license": "UNLICENSED"
+}
